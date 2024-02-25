@@ -1,0 +1,41 @@
+mmdet版本：2.28.2 (mmdet3.x有较大改动，有些命令用不了)
+
+基础：
+1.修改config文件
+
+2.训练
+python tools/train.py configs/atss/atss_r50_fpn_1x_boat.py
+
+分析：
+1.生成pkl/json文件
+python tools/test.py \
+       configs/mask_rcnn/mask_rcnn_r50_fpn_1x_coco.py \
+       checkpoint/mask_rcnn_r50_fpn_1x_coco_20200205-d4b0c5d6.pth \
+       --format-only \
+       --options "jsonfile_prefix=./results"
+
+python tools/test.py ${CONFIG} ${MODEL_PATH} --out results.pkl
+
+2.confusion matrix 混淆矩阵
+python tools/analysis_tools/confusion_matrix.py ${CONFIG}  ${DETECTION_RESULTS}  ${SAVE_DIR} --show
+
+3.pr_curve.py (需自己上传该文件到tools/analysis_tools/中，需要test.py生成的json格式的结果) P-R曲线
+python tools/analysis_tools/pr_curve.py  --plot_single  xx/val.json xx/bbox.json --out work_dir/xxx/ --legend 'P-R Curve'
+
+4. analyze_logs.py 损失曲线
+python xxx/analyze_logs.py work_dir/xxx/xxx.log.json --keys loss --legend loss --out wor_dir/xxx/ --plot_curve
+
+5. fps 
+python -m torch.distributed.launch --nproc_per_node=1 --master_port=29500 tools/analysis_tools/benchmark.py configs/pascal_voc07/faster_rcnn_r50_fpn_50e_voc07.py work_dirs/faster_rcnn_r50_fpn_50e_voc07/latest.pth --launcher pytorch
+
+
+
+修改 loading.py
+#修改部分 l 67-71
+filename = filename.split('..\\')[-1]
+root = filename[0]
+print(filename)
+filename = filename.split('\\')[-1]
+print(filename)
+filename = root + filename
+print(filename)

@@ -1,0 +1,3 @@
+VOC数据集jpg换成png格式
+mmdet/datasests/xml_style.py line 57：
+filename = osp.join(self.img_subdir, f'{img_id}.png')
