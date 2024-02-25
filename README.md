@@ -41,6 +41,7 @@ data下载放到项目根目录data文件
 
 work_dirs 下载解压放到 work_dirs目录
 
+```
 2023-07-24 07:10:21,248 - mmdet - INFO - Distributed training: False
 2023-07-24 07:10:21,671 - mmdet - INFO - Config:
 dataset_type = 'CocoDataset'
@@ -79,3 +80,5 @@ test_pipeline = [
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ])
+
+```
